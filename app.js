@@ -31,7 +31,7 @@ app.post("/api/books", (req, res) => {
         return;
       }
       console.log("New books has been added");
-      res.status(201).send();
+      res.status(201).send(req.body);
     }
   );
 });
@@ -70,10 +70,34 @@ app.get("/api/books/:id", (req, res) => {
 app.get("/api/books", (req, res) => {
   res.setHeader("Content-Type", "application/json");
 
-  const query = "SELECT * FROM Books";
+  console.log(req.query);
+  //const query = "SELECT * FROM Books";
 
+  let condition = "TRUE"
+  let sort_criteria = "id"
+  let sort_order = "ASC"
+  
+  if (req.query.title) { 
+    condition=`title = "`+ req.query.title+`"`
+  }
+  if (req.query.author) {
+    condition = "author = " + req.query.author;
+  }
+  if (req.query.genre) {
+    condition = "genre = " + req.query.genre;
+  }
+
+  if (req.query.sort)
+    sort_criteria = req.query.sort
+  
+  if (req.query.order)
+    sort_order=req.query.order
+  
+  const query = "SELECT * FROM Books WHERE " + condition + " ORDER BY " + sort_criteria + " " + sort_order + " , id ASC";
+  console.log(query)
   db.all(query, (err, rows) => {
     if (err) {
+       console.log(err)
       res.status(500).send({
         message: `server error`,
         err: err,
@@ -87,7 +111,7 @@ app.get("/api/books", (req, res) => {
 
 // Endpoint for updating data
 app.put("/api/books/:id", (req, res) => {
-  const bookId = req.params.id;
+  const bookId = parseInt(req.params.id);
   const updatedValues = req.body;
 
   // Check if the book with the given ID exists
@@ -130,6 +154,16 @@ app.put("/api/books/:id", (req, res) => {
     );
   });
 });
+
+
+
+app.post('/api', (req,res) => { 
+  console.log(req.query)
+
+  res.status(200).send(req.query)
+})
+
+
 
 // Start the server
 app.listen(port, function () {
