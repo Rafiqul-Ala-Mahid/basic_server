@@ -3,7 +3,7 @@ var sqlite3 = require("sqlite3").verbose();
 
 var db = new sqlite3.Database("database.db");
 const app = express();
-const port = process.env.port || 5000;
+const port = process.env.port || 8000;
 
 app.use(express.json());
 

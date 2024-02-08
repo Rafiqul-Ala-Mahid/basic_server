@@ -17,7 +17,7 @@ RUN npm i
 RUN node db.js
 
 # Expose the port that the app will run on
-EXPOSE 5000
+EXPOSE 8000
 
 # Define the command to run your application
 CMD [ "node", "app.js" ]
