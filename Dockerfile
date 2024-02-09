@@ -16,6 +16,11 @@ COPY . .
 RUN npm i
 RUN node db.js
 
+RUN node station_db.js
+RUN node stops_db.js
+RUN node train_db.js
+RUN node user_db.js
+
 # Expose the port that the app will run on
 EXPOSE 8000
 
